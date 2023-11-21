@@ -15,8 +15,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-API_URL = "https://randomuser.me/api/"
-
 # Application definition
 
 INSTALLED_APPS = [
