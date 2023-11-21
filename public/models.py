@@ -9,9 +9,10 @@ class RandomUser(models.Model):
     street_name = models.CharField(max_length=100, verbose_name="Улица", blank=True)
     city = models.CharField(max_length=100, verbose_name="Город проживания", blank=True)
     country = models.CharField(max_length=100, verbose_name="Страна проживания", blank=True)
-    postcode = models.IntegerField(verbose_name="Почтовый индекс", blank=True)
+    postcode = models.CharField(max_length=100, verbose_name="Почтовый индекс", blank=True)
     login = models.CharField(max_length=100, verbose_name="Логин", blank=True)
     password = models.CharField(max_length=100, verbose_name="Пароль", blank=True)
+    email = models.EmailField(verbose_name="Почта", blank=True)
     born_date = models.DateTimeField(verbose_name="Дата рождения", blank=True)
     age = models.CharField(max_length=100, verbose_name="Возраст", blank=True)
 

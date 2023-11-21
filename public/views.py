@@ -1,6 +1,5 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.utils import json
 from rest_framework.views import APIView
 import requests
 
@@ -12,43 +11,30 @@ class RandomUserViewSet(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        info = requests.get(self.api_url).json()
-        gender = info["results"][0].get("gender")
-        first = info["results"][0]['name'].get("first")
-        last = info["results"][0]['name'].get("last")
-        street_number = info["results"][0]['location']['street'].get("number")
-        street_name = info["results"][0]['location']['street'].get("name")
-        city = info["results"][0]['location'].get("city")
-        country = info["results"][0]['location'].get("country")
-        postcode = info["results"][0]['location'].get("postcode")
-        username = info["results"][0]['login'].get("username")
-        password = info["results"][0]['login'].get("password")
-        date = info["results"][0]['registered'].get("date")
-        age = info["results"][0]['registered'].get("age")
+        response = requests.get(self.api_url).json()
 
-        RandomUser.objects.create(
-            gender=gender,
-            first_name=first,
-            last_name=last,
-            street_number=street_number,
-            street_name=street_name,
-            city=city,
-            country=country,
-            postcode=str(postcode),
-            login=username,
-            password=password,
-            born_date=date,
-            age=age,
-        )
+        result = response["results"][0]
+        name = result['name']
+        location = result['location']
+        login = result['login']
+        registered = result['registered']
 
-        return Response(info)
+        data = {
+            "gender": result.get("gender"),
+            "first_name": name.get("first"),
+            "last_name": name.get("last"),
+            "street_number": location['street'].get("number"),
+            "street_name": location['street'].get("name"),
+            "city": location.get("city"),
+            "country": location.get("country"),
+            "postcode": str(location.get("postcode")),
+            "login": login.get("username"),
+            "password": login.get("password"),
+            "email": result.get("email"),
+            "born_date": registered.get("date"),
+            "age": registered.get("age"),
+        }
 
-    # def post(self, request):
-    #     info = requests.get(self.api_url, data=json)
-    #     gender = info.get('gender')
-    #
-    #     print(gender)
-    #
-    #     return Response(info)
+        RandomUser.objects.create(**data)
 
-
+        return Response(data)
