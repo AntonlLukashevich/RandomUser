@@ -17,7 +17,7 @@ class RandomUserViewSet(APIView):
         name = result['name']
         location = result['location']
         login = result['login']
-        registered = result['registered']
+        dob = result['dob']
 
         data = {
             "gender": result.get("gender"),
@@ -31,8 +31,8 @@ class RandomUserViewSet(APIView):
             "login": login.get("username"),
             "password": login.get("password"),
             "email": result.get("email"),
-            "born_date": registered.get("date"),
-            "age": registered.get("age"),
+            "born_date": dob.get("date"),
+            "age": dob.get("age"),
         }
 
         RandomUser.objects.create(**data)
