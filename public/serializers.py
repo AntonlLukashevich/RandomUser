@@ -30,18 +30,4 @@ class ResponseHandling:
 class RandomUserSerializer(serializers.ModelSerializer, ResponseHandling):
     class Meta:
         model = RandomUser
-        fields = (
-            'gender',
-            'first_name',
-            'last_name',
-            'street_number',
-            'street_name',
-            'city',
-            'country',
-            'postcode',
-            'login',
-            'password',
-            'email',
-            'born_date',
-            'age',
-        )
+        fields = '__all__'
