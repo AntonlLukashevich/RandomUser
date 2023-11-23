@@ -11,19 +11,19 @@ class RandomUserSerializer(serializers.ModelSerializer):
         dob = result['dob']
 
         data = {
-            'gender': result.get("gender"),
-            'first_name': name.get("first"),
-            'last_name': name.get("last"),
-            'street_number': location['street'].get("number"),
-            'street_name': location['street'].get("name"),
-            'city': location.get("city"),
-            'country': location.get("country"),
-            'postcode': location.get("postcode"),
-            'login': login.get("username"),
-            'password': login.get("password"),
-            'email': result.get("email"),
-            'born_date': dob.get("date"),
-            'age': dob.get("age"),
+            'gender': result["gender"],
+            'first_name': name["first"],
+            'last_name': name["last"],
+            'street_number': location['street']["number"],
+            'street_name': location['street']["name"],
+            'city': location["city"],
+            'country': location["country"],
+            'postcode': location["postcode"],
+            'login': login["username"],
+            'password': login["password"],
+            'email': result["email"],
+            'born_date': dob["date"],
+            'age': dob["age"],
         }
 
         RandomUser.objects.create(**data)
