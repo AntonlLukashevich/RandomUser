@@ -15,4 +15,3 @@ class RandomUser(models.Model):
     email = models.EmailField(verbose_name="Почта", blank=True)
     born_date = models.DateTimeField(verbose_name="Дата рождения", blank=True)
     age = models.CharField(max_length=100, verbose_name="Возраст", blank=True)
-

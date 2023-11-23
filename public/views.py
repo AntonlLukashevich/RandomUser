@@ -13,6 +13,7 @@ class RandomUserViewSet(APIView):
 
     def post(self, request):
         response = requests.get(self.api_url)
-        self.serializer_class.save_response(response.json(), response_data=response.json())
+        data = response.json()
+        self.serializer_class.save_response(data, response_data=data)
 
         return Response({"status": "success"})
