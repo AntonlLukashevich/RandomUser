@@ -2,32 +2,37 @@ from rest_framework import serializers
 from .models import RandomUser
 
 
-class RandomUserSerializer(serializers.ModelSerializer):
-    def save_response(self, response_data):
-        result = response_data["results"][0]
-        name = result['name']
-        location = result['location']
-        login = result['login']
-        dob = result['dob']
+class RandomUserSerializer(serializers.Serializer):
+    gender = serializers.CharField(max_length=100, label="Пол")
+    first_name = serializers.CharField(max_length=100, label="Имя", required=False)
+    last_name = serializers.CharField(max_length=100, label="Фамилия", required=False)
+    street_number = serializers.IntegerField(label="Номер улицы", required=False, allow_null=True)
+    street_name = serializers.CharField(max_length=100, label="Улица", required=False)
+    city = serializers.CharField(max_length=100, label="Город проживания", required=False)
+    country = serializers.CharField(max_length=100, label="Страна проживания", required=False)
+    postcode = serializers.CharField(max_length=100, label="Почтовый индекс", required=False)
+    login = serializers.CharField(max_length=100, label="Логин", required=False)
+    password = serializers.CharField(max_length=100, label="Пароль", required=False)
+    email = serializers.EmailField(label="Почта", required=False)
+    born_data = serializers.DateTimeField(label="Дата рождения", required=False)
+    age = serializers.IntegerField(label="Возраст", required=False)
 
-        data = {
-            'gender': result["gender"],
-            'first_name': name["first"],
-            'last_name': name["last"],
-            'street_number': location['street']["number"],
-            'street_name': location['street']["name"],
-            'city': location["city"],
-            'country': location["country"],
-            'postcode': location["postcode"],
-            'login': login["username"],
-            'password': login["password"],
-            'email': result["email"],
-            'born_date': dob["date"],
-            'age': dob["age"],
+    def to_internal_value(self, data):
+        return {
+            "gender": data.get('gender'),
+            "first_name": data.get('name', {}).get('first', ''),
+            "last_name": data.get('name', {}).get('last', ''),
+            "street_number": data.get('location', {}).get('street', {}).get('number'),
+            "street_name": data.get('location', {}).get('street', {}).get('name', ''),
+            "city": data.get('location', {}).get('city', ''),
+            "country": data.get('location', {}).get('country', ''),
+            "postcode": data.get('location', {}).get('postcode', ''),
+            "login": data.get('login', {}).get('username', ''),
+            "password": data.get('login', {}).get('password', ''),
+            "email": data.get('email'),
+            "born_data": data.get('dob', {}).get('date'),
+            "age": data.get('dob', {}).get('age'),
         }
 
-        RandomUser.objects.create(**data)
-
-    class Meta:
-        model = RandomUser
-        fields = '__all__'
+    def create(self, validated_data):
+        return RandomUser.objects.create(**validated_data)
